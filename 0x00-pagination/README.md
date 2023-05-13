@@ -1,6 +1,6 @@
 # 0x00-pagination
 
-This repository contains Python scripts that demonstrate different types of pagination techniques.
+This directory contains Python scripts that demonstrate different types of pagination techniques.
 
 ## Files
 
