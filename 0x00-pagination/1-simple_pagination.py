@@ -51,9 +51,9 @@ class Server:
         Return:
             right page of the dataset, empty list if out of range
         """
-        if not isinstance(page, int) or not isinstance(
-          page_size, int) or page <= 0 or page_size <= 0:
-            return []
+        assert isinstance(page, int) and isinstance(page_size, int), \
+            "Both page and page_size must be integers."
+        assert page > 0 and page_size > 0, "Both page and page_size must be greater than 0."
 
         start_index, end_index = index_range(page, page_size)
         dataset = self.dataset()
