@@ -53,7 +53,8 @@ class Server:
         """
         assert isinstance(page, int) and isinstance(page_size, int), \
             "Both page and page_size must be integers."
-        assert page > 0 and page_size > 0, "Both page and page_size must be greater than 0."
+        assert page > 0 and page_size > 0, \
+            "Both page and page_size must be greater than 0."
 
         start_index, end_index = index_range(page, page_size)
         dataset = self.dataset()
