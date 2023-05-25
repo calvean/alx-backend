@@ -15,19 +15,7 @@ class MRUCache(BaseCaching):
         """ Initialize the MRUCache object """
 
         super().__init__()
-        self.mru_queue = []
-
-    def _update_queue(self, key):
-        """
-        Update the MRU queue based on the provided key.
-
-        Args:
-            key: The key of the item.
-        """
-
-        if key in self.mru_queue:
-            self.mru_queue.remove(key)
-        self.mru_queue.insert(0, key)
+        self.keys = []
 
     def put(self, key, item):
         """
@@ -42,16 +30,16 @@ class MRUCache(BaseCaching):
             Otherwise, assigns item to key in cache_data dictionary.
         """
 
-        if key is None or item is None:
-            return
-
-        self.cache_data[key] = item
-        self._update_queue(key)
-
-        if len(self.cache_data) > self.MAX_ITEMS:
-            discarded_key = self.mru_queue.pop()
-            del self.cache_data[discarded_key]
-            print("DISCARD: {}".format(discarded_key))
+        if key is not None and item is not None:
+            self.cache_data[key] = item
+            if key not in self.keys:
+                self.keys.append(key)
+            else:
+                self.keys.append(self.keys.pop(self.keys.index(key)))
+            if len(self.keys) > BaseCaching.MAX_ITEMS:
+                discard = self.keys.pop(-2)
+                del self.cache_data[discard]
+                print('DISCARD: {:s}'.format(discard))
 
     def get(self, key):
         """
@@ -65,10 +53,7 @@ class MRUCache(BaseCaching):
             or None if key is None or does not exist
         """
 
-        if key is None or key not in self.cache_data:
-            return None
-
-        self._update_queue(key)
-        return self.cache_data[key]
-
-        
+        if key is not None and key in self.cache_data:
+            self.keys.append(self.keys.pop(self.keys.index(key)))
+            return self.cache_data[key]
+        return None
