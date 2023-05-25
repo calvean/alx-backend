@@ -15,7 +15,7 @@ class LIFOCache(BaseCaching):
         """ Initialize the LIFOCache object """
 
         super().__init__()
-        self.stack = []
+        self.last_key = ''
 
     def put(self, key, item):
         """
@@ -30,16 +30,12 @@ class LIFOCache(BaseCaching):
             Otherwise, assigns item to key in cache_data dictionary.
         """
 
-        if key is None or item is None:
-            return
-
-        self.cache_data[key] = item
-        self.stack.append(key)
-
-        if len(self.stack) > self.MAX_ITEMS:
-            discarded_key = self.stack.pop(0)
-            del self.cache_data[discarded_key]
-            print("DISCARD: {}".format(discarded_key))
+        if key and item:
+            self.cache_data[key] = item
+            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+                print("DISCARD: {}".format(self.last_key))
+                self.cache_data.pop(self.last_key)
+            self.last_key = key
 
     def get(self, key):
         """
@@ -53,7 +49,8 @@ class LIFOCache(BaseCaching):
             or None if key is None or does not exist
         """
 
-        if key is None or key not in self.cache_data:
+        if key is None or self.cache_data.get(key) is None:
             return None
-
-        return self.cache_data[key]
+        if key in self.cache_data:
+            value = self.cache_data[key]
+            return value
