@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""
-0-basic_cache Module
-
-Defines the BasicCache class that inherits from BaseCaching.
-"""
+""" 0-basic_cache Module """
 
 BaseCaching = __import__('base_caching').BaseCaching
 
@@ -27,6 +23,7 @@ class BasicCache(BaseCaching):
             Nothing, If the key or item is None,
             Otherwise, assigns item to key in cache_data dictionary.
         """
+
         if key is None or item is None:
             return
 
@@ -43,6 +40,7 @@ class BasicCache(BaseCaching):
             The key value in the cache_data dictionary,
             or None if the key is None or does not exist
         """
+
         if key is None or key not in self.cache_data:
             return None
 

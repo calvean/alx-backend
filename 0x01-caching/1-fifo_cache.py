@@ -12,9 +12,7 @@ class FIFOCache(BaseCaching):
     """
 
     def __init__(self):
-        """
-        Initialize the FIFOCache object
-        """
+        """ Initialize the FIFOCache object """
         super().__init__()
         self.queue = []
 
@@ -30,6 +28,7 @@ class FIFOCache(BaseCaching):
             Nothing, If the key or item is None,
             Otherwise, assigns item to key in cache_data dictionary.
         """
+
         if key is None or item is None:
             return
 
@@ -42,7 +41,8 @@ class FIFOCache(BaseCaching):
             print("DISCARD: {}".format(oldest_key))
 
     def get(self, key):
-        """Get an item from the cache
+        """
+        Get an item from the cache
 
         Args:
             key: The key of the item to retrieve.
@@ -51,6 +51,7 @@ class FIFOCache(BaseCaching):
             The value of key in the cache_data dictionary,
             or None if key is None or does not exist
         """
+
         if key is None or key not in self.cache_data:
             return None
 
