@@ -5,51 +5,14 @@ BaseCaching = __import__('base_caching').BaseCaching
 
 
 class LFUCache(BaseCaching):
-    """
-    LFUCache Class
-
-    Implements the LFU (Least Frequently Used) algorithm
-    """
+    """ An LFU cache that inherits from BaseCaching """
 
     def __init__(self):
         """ Initialize the LFUCache instance """
 
         super().__init__()
         self.frequency = {}
-        self.frequency_queue = [[] for _ in range(self.MAX_ITEMS + 1)]
-
-    def _update_frequency(self, key):
-        """
-        Update the frequency count of the provided key.
-
-        Args:
-            key: The key of the item.
-
-        Return:
-            Increments frequency count of key by 1 and moves the key
-            to the corresponding frequency queue.
-            Add 1 If the key doesn't exist
-        """
-        if key in self.frequency:
-            current_count = self.frequency[key]
-            self.frequency[key] += 1
-            self.frequency_queue[current_count].remove(key)
-        else:
-            self.frequency[key] = 1
-
-        self.frequency_queue[self.frequency[key]].append(key)
-
-    def _evict(self):
-        """
-        Evict the least frequently used items from the cache.
-        """
-        for queue in self.frequency_queue:
-            if len(queue) > 0:
-                discarded_key = queue.pop(0)
-                del self.cache_data[discarded_key]
-                del self.frequency[discarded_key]
-                print("DISCARD: {}".format(discarded_key))
-                break
+        self.usage = {}
 
     def put(self, key, item):
         """
@@ -69,12 +32,13 @@ class LFUCache(BaseCaching):
 
         if key in self.cache_data:
             self.cache_data[key] = item
-            self._update_frequency(key)
+            self.usage[key] += 1
         else:
             if len(self.cache_data) >= self.MAX_ITEMS:
                 self._evict()
             self.cache_data[key] = item
-            self._update_frequency(key)
+            self.frequency[key] = 1
+            self.usage[key] = 1
 
     def get(self, key):
         """
@@ -91,5 +55,18 @@ class LFUCache(BaseCaching):
         if key is None or key not in self.cache_data:
             return None
 
-        self._update_frequency(key)
+        self.usage[key] += 1
         return self.cache_data[key]
+
+    def _evict(self):
+        """ Evict the least frequently used item(s) from the cache """
+
+        min_frequency = min(self.frequency.values())
+        candidates = [
+          key for key in self.frequency if self.frequency[key] == min_frequency
+          ]
+        lru_key = min(candidates, key=lambda k: self.usage[k])
+        del self.cache_data[lru_key]
+        del self.frequency[lru_key]
+        del self.usage[lru_key]
+        print("DISCARD: {}".format(lru_key))
