@@ -3,8 +3,8 @@
 
 BaseCaching = __import__('base_caching').BaseCaching
 
-
-class FIFOCache(BaseCaching):
+        
+class LIFOCache(BaseCaching):
     """
     FIFOCache class
 
@@ -13,8 +13,9 @@ class FIFOCache(BaseCaching):
 
     def __init__(self):
         """ Initialize the FIFOCache object """
+
         super().__init__()
-        self.queue = []
+        self.stack = []
 
     def put(self, key, item):
         """
@@ -33,12 +34,12 @@ class FIFOCache(BaseCaching):
             return
 
         self.cache_data[key] = item
-        self.queue.append(key)
+        self.stack.append(key)
 
-        if len(self.queue) > self.MAX_ITEMS:
-            oldest_key = self.queue.pop(0)
-            del self.cache_data[oldest_key]
-            print("DISCARD: {}".format(oldest_key))
+        if len(self.cache_data) > self.MAX_ITEMS:
+            discarded_key = self.stack.pop()
+            del self.cache_data[discarded_key]
+            print("DISCARD: {}".format(discarded_key))
 
     def get(self, key):
         """
@@ -56,3 +57,4 @@ class FIFOCache(BaseCaching):
             return None
 
         return self.cache_data[key]
+
