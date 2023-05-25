@@ -3,13 +3,13 @@
 
 BaseCaching = __import__('base_caching').BaseCaching
 
+
 class FIFOCache(BaseCaching):
     """
     FIFOCache class
 
     Implements the First-In-First-Out (FIFO) caching algorithm.
     """
-
 
     def __init__(self):
         """
