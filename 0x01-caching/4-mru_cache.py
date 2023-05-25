@@ -17,6 +17,18 @@ class MRUCache(BaseCaching):
         super().__init__()
         self.mru_queue = []
 
+    def _update_queue(self, key):
+        """
+        Update the MRU queue based on the provided key.
+
+        Args:
+            key: The key of the item.
+        """
+
+        if key in self.mru_queue:
+            self.mru_queue.remove(key)
+        self.mru_queue.insert(0, key)
+
     def put(self, key, item):
         """
         Add an item to the cache
@@ -34,10 +46,7 @@ class MRUCache(BaseCaching):
             return
 
         self.cache_data[key] = item
-
-        if key in self.mru_queue:
-            self.mru_queue.remove(key)
-        self.mru_queue.insert(0, key)
+        self._update_queue(key)
 
         if len(self.cache_data) > self.MAX_ITEMS:
             discarded_key = self.mru_queue.pop()
@@ -59,7 +68,7 @@ class MRUCache(BaseCaching):
         if key is None or key not in self.cache_data:
             return None
 
-        self.mru_queue.remove(key)
-        self.mru_queue.insert(0, key)
-
+        self._update_queue(key)
         return self.cache_data[key]
+
+        
