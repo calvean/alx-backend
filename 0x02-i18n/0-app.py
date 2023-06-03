@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""Starts a Flask web application
-The application listens on 0.0.0.0, port 5000
-"""
-
+""" Starts a Flask web application """
 from flask import Flask, render_template
 
 app = Flask(__name__)
