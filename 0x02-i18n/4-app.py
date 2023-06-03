@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Starts a Flask web application """
 from flask import Flask, render_template
-from flask_babel import Babel, gettext
+from flask_babel import Babel, gettext as _
 
 app = Flask(__name__)
 babel = Babel(app)
@@ -20,21 +20,15 @@ app.config.from_object(Config)
 @babel.localeselector
 def get_locale():
     """ Selects the best language based on user's preferences """
-    if 'locale' in request.args:
-        requested_locale = request.args.get('locale')
-
-        if requested_locale in app.config['LANGUAGES']:
-            return requested_locale
-
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 @app.route('/', strict_slashes=False)
 def index():
-    """ Serves index page with parametrized templates """
-    return render_template('index.html',
-                           title=gettext('home_title'),
-                           header=gettext('home_header'))
+    """ Serves index page with localized text """
+    title = _("Welcome to Holberton")
+    header = _("Hello world!")
+    return render_template('index.html', title=title, header=header)
 
 
 if __name__ == '__main__':
