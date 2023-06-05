@@ -28,7 +28,7 @@ def index():
     """ Serves index page with localized text """
     title = _("Welcome to Holberton")
     header = _("Hello world!")
-    return render_template('index.html', title=title, header=header)
+    return render_template('4-index.html', title=title, header=header)
 
 
 if __name__ == '__main__':
