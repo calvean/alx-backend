@@ -2,6 +2,7 @@
 """ Starts a Flask web application """
 from flask import Flask, render_template, request
 from flask_babel import Babel, gettext as _
+""" import gettesxtt from flask_babel """
 
 app = Flask(__name__)
 babel = Babel(app)
