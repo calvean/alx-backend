@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-""" Starts a Flask web application """
+"""
+Starts a Flask web application and use gettext
+"""
 from flask import Flask, render_template, request
 from flask_babel import Babel, gettext as _
-""" import gettesxtt from flask_babel """
 
 app = Flask(__name__)
 babel = Babel(app)
