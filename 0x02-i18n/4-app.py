@@ -31,7 +31,7 @@ def get_locale():
 @app.route('/', strict_slashes=False)
 def index():
     """ Serves index page with parametrized templates """
-    return render_template('3-index.html',
+    return render_template('4-index.html',
                            title=_('home_title'),
                            header=_('home_header'))
 
