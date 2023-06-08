@@ -4,6 +4,7 @@ Starts a Flask web application and use gettext
 """
 from flask import Flask, render_template, request, g
 from flask_babel import Babel, gettext as _
+import pytz
 
 app = Flask(__name__)
 babel = Babel(app)
@@ -49,6 +50,27 @@ def get_locale():
     return app.config['BABEL_DEFAULT_LOCALE']
 
 
+@babel.timezoneselector
+def get_timezone():
+    """ Selects the best time zone based on user's preferences """
+    timezone = request.args.get('timezone')
+    if timezone:
+        try:
+            pytz.timezone(timezone)
+            return timezone
+        except pytz.UnknownTimeZoneError:
+            pass
+
+    if g.user and g.user['timezone']:
+        try:
+            pytz.timezone(g.user['timezone'])
+            return g.user['timezone']
+        except pytz.UnknownTimeZoneError:
+            pass
+
+    return 'UTC'
+
+
 @app.before_request
 def before_request():
     """
@@ -66,7 +88,7 @@ def before_request():
 @app.route('/', strict_slashes=False)
 def index():
     """ Serves index page with parametrized templates """
-    return render_template('6-index.html', title=_('home_title'))
+    return render_template('7-index.html', title=_('home_title'))
 
 
 if __name__ == '__main__':
