@@ -32,6 +32,15 @@ def get_user(user_id):
     return users.get(user_id)
 
 
+@babel.localeselector
+def get_locale():
+    """ Selects the best language based on user's preferences """
+    locale = request.args.get('locale')
+    if locale and locale in app.config['LANGUAGES']:
+        return locale
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
 @app.before_request
 def before_request():
     """
