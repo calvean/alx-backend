@@ -26,3 +26,11 @@ msgstr "Welcome to Holberton"
 msgid "home_header"
 msgstr "Hello world!"
 
+#: 5-app.py:31
+msgid "logged_in_as"
+msgstr "You are logged in as %(username)s."
+
+#: 5-app.py:31
+msgid "not_logged_in"
+msgstr "You are not logged in."
+
