@@ -5,6 +5,7 @@ Starts a Flask web application and use gettext
 from flask import Flask, render_template, request, g
 from flask_babel import Babel, gettext as _
 import pytz
+from datetime import datetime
 
 app = Flask(__name__)
 babel = Babel(app)
@@ -91,7 +92,7 @@ def index():
     current_time = datetime.now(
       pytz.timezone(get_timezone())).strftime('%b %d, %Y, %I:%M:%S %p')
     return render_template(
-      '5-index.html',
+      'index.html',
       title=_('home_title'),
       current_time=current_time)
 
